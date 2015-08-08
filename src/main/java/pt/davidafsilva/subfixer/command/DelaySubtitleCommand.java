@@ -28,16 +28,13 @@ package pt.davidafsilva.subfixer.command;
  * #L%
 */
 
-import java.time.temporal.ChronoUnit;
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.function.Function;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import pt.davidafsilva.subfixer.load.SubtitleEntry;
 import pt.davidafsilva.subfixer.load.SubtitleLoader;
 
@@ -48,42 +45,26 @@ import pt.davidafsilva.subfixer.load.SubtitleLoader;
  */
 public final class DelaySubtitleCommand implements Function<List<SubtitleEntry>, List<SubtitleEntry>> {
 
-  // the valid temporal units
-  private static final Map<String, ChronoUnit> VALID_UNITS;
-  static {
-    VALID_UNITS = Collections.unmodifiableMap(Arrays.stream(ChronoUnit.values())
-          .filter(ChronoUnit::isDurationEstimated)
-          .collect(Collectors.toMap(ChronoUnit::name, u -> u)));
-  }
-
-  // the invalid unit exception function
-  private static final Function<String, ChronoUnit> INVALID_UNIT_EXCEPTION = u -> {
-    throw new CommandExecutionException(u + " is an invalid unit. Valid units are: " + VALID_UNITS);
-  };
-
   // the entry transformation function
   final BiFunction<SubtitleEntry, Duration, SubtitleEntry> ENTRY_TRANSFORMATION =
     (e, d) -> e.setTimeFrame(e.getStartTime().plus(d), e.getEndTime().plus(d));
 
   // "raw" properties
   private final String delay;
-  private final String unit;
 
   /**
-   * Constructs the delay command with the specified delay and unit
+   * Constructs the delay command with the specified delay pattern
    *
-   * @param delay the delay to be applied. May be negative if prefixed with a minus (-) sign
-   * @param unit  the delay time unit
+   * @param delay the delay pattern to be applied.
    */
-  public DelaySubtitleCommand(final String delay, final String unit) {
+  public DelaySubtitleCommand(final String delay) {
     this.delay = delay;
-    this.unit = unit;
   }
 
   @Override
   public List<SubtitleEntry> apply(final List<SubtitleEntry> entries) {
     // create the duration with the delay
-    final Duration duration = Duration.of(convertDelay(delay), convertUnit(unit));
+    final Duration duration = convertDelay(delay);
 
     // apply the delay
     return Collections.unmodifiableList(entries.stream()
@@ -92,28 +73,17 @@ public final class DelaySubtitleCommand implements Function<List<SubtitleEntry>,
   }
 
   /**
-   * Converts the specified delay into a valid numeric value typed delay.
+   * Converts the specified delay pattern into a valid duration object.
    *
-   * @param delay the raw user specified delay
-   * @return the numeric delay
+   * @param delay the raw user specified delay pattern
+   * @return the duration
    * @throws CommandExecutionException if the specified delay is invalid
    */
-  private long convertDelay(final String delay) {
+  private Duration convertDelay(final String delay) {
     try {
-      return Long.parseLong(delay);
-    } catch (final NumberFormatException e) {
-      throw new CommandExecutionException(delay + " is an invalid delay");
+      return Duration.parse(delay);
+    } catch (final DateTimeParseException e) {
+      throw new CommandExecutionException(delay + " is an invalid delay pattern");
     }
-  }
-
-  /**
-   * Converts the specified unit into a valid ChronoUnit.
-   *
-   * @param unit the raw user specified unit
-   * @return the ChronoUnit
-   * @throws CommandExecutionException if the specified unit is invalid
-   */
-  private ChronoUnit convertUnit(final String unit) {
-    return VALID_UNITS.computeIfAbsent(delay, INVALID_UNIT_EXCEPTION);
   }
  }

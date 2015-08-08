@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pt.davidafsilva</groupId>
+    <groupId>pt.davidafsilva.subfixer</groupId>
     <artifactId>subtitle-fixer</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -14,7 +14,6 @@
         <connection>scm:git:git@github.com:davidafsilva/subtitle-fixer.git</connection>
         <developerConnection>scm:git:git@github.com:davidafsilva/subtitle-fixer.git</developerConnection>
         <url>https://github.com/davidafsilva/subtitle-fixer</url>
-        <tag>HEAD</tag>
     </scm>
 
     <!-- project properties -->

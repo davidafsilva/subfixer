@@ -26,11 +26,22 @@ package pt.davidafsilva.subfixer;
  * #L%
  */
 
+ import pt.davidafsilva.subfixer.command.CommandExecutor;
+ import pt.davidafsilva.subfixer.command.CommandExecutionException;
+ import pt.davidafsilva.subfixer.command.DelaySubtitleCommand;
+ import pt.davidafsilva.subfixer.command.LoadSubtitleEntriesCommand;
+ import pt.davidafsilva.subfixer.command.PrintSubtitleEntriesCommand;
+
 /**
  * The entry point for the subtitle-fixer utility
  * @author david
  */
 public final class Application {
+
+  // input indices
+  private static final int DELAY_INDEX = 0;
+  private static final int UNIT_INDEX = 1;
+  private static final int INPUT_FILE_INDEX = 2;
 
   /**
    * The main method, called from the command line
@@ -38,19 +49,34 @@ public final class Application {
    */
   public static void main(final String[] args) {
     // input validation
-    if (args.length != 3 && args.length != 4) {
+    if (args.length != 3) {
       System.err.println("missing arguments: \n" +
-        "<subtitle file> - the input file\n" +
         "    <[+|-]time> - the positive or negative delta of time to apply\n" +
         "    <time unit> - the time unit (one of: MS|S|M)\n" +
-        "     [out file] - optional output file, otherwie outputs to STDOUT");
+        "      <in file> - the input file");
       System.exit(1);
     }
 
-    // try {
-    //   SubtitleLoader.load(args[0]).stream().forEach(System.out::println);
-    // } catch (final Exception e) {
-    //   System.err.println("an error occurred: " + e.getLocalizedMessage());
-    // }
+    // extract the input from args
+    final String delay = args[DELAY_INDEX];
+    final String unit = args[UNIT_INDEX];
+    final String inputFile = args[INPUT_FILE_INDEX];
+
+    try {
+      // chain and execute the commands
+      CommandExecutor.getInstance().execute(
+        new LoadSubtitleEntriesCommand().andThen(
+          new DelaySubtitleCommand(delay, unit).andThen(
+            new PrintSubtitleEntriesCommand(System.out)
+          )
+        ), inputFile);
+    } catch (final CommandExecutionException e) {
+      System.err.printf("error while executing the delay command:%n-> %s%n",
+                        e.getLocalizedMessage());
+    } catch (final Exception e) {
+      System.err.printf("an unexpected error has landed:%n-> %s%n-> %s%n",
+                        e.getClass().getSimpleName(),
+                        e.getLocalizedMessage());
+    }
   }
 }

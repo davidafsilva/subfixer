@@ -61,31 +61,29 @@ public final class SubtitleEntry {
    * Returns the start time of the entry
    * @return the start time
    */
-  LocalTime getStartTime() { return startTime; }
+  public LocalTime getStartTime() { return startTime; }
 
   /**
    * Returns the end time of the entry
    * @return the end time
    */
-  LocalTime getEndTime() { return endTime; }
+  public LocalTime getEndTime() { return endTime; }
 
   /**
    * Returns the text of the entry
    * @return the actual text
    */
-  String getText() { return text; }
+  public String getText() { return text; }
 
   /**
-   * Returns a string representation of this entry
+   * Creates a new subtitle entry with the specified start and end time
+   * and text from this entry.
    *
-   * @return the entry's string representation
+   * @param startTime the start time of the new entry
+   * @param endTime   the end time of the new entry
+   * @return the newly created subtitle entry
    */
-   @Override
-   public String toString() {
-     return "SubtitleEntry{" +
-        "start: " + startTime +
-        ", end: " + endTime +
-        ", text: " + text +
-        "}";
-   }
+  public SubtitleEntry setTimeFrame(final LocalTime startTime, final LocalTime endTime) {
+    return new SubtitleEntry(startTime, endTime, text);
+  }
 }

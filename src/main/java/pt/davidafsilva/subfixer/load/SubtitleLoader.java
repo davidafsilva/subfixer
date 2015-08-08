@@ -69,6 +69,7 @@ public final class SubtitleLoader {
    *
    * @param subtitleFile the start time of the entry
    * @return the ordered list of subtitle entries
+   * @throws IOException if an error occurs while reading the source file 
    */
    public static List<SubtitleEntry> load(final String subtitleFile) throws IOException {
      // creates a new load context

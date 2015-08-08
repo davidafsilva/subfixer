@@ -55,6 +55,8 @@ public final class CommandExecutor {
   /**
    * Executes and returns the command result.
    *
+   * @param <I> the type of the input value
+   * @param <R> the type of the command result
    * @param command the command to be executed
    * @param input   the command input
    * @return the command result

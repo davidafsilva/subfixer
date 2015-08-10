@@ -12,10 +12,10 @@ package pt.davidafsilva.subfixer;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -75,13 +75,29 @@ public final class Application {
           )
         ), inputFile);
     } catch (final CommandExecutionException e) {
-      System.err.printf("error while executing the delay command:%n-> %s%n",
+      error(e, "error while executing the delay command:%n-> %s%n",
                         e.getLocalizedMessage());
     } catch (final Exception e) {
-      e.printStackTrace();
-      System.err.printf("an unexpected error has landed:%n-> %s: %s%n",
+      error(e, "an unexpected error has landed:%n-> %s: %s%n",
                         e.getClass().getSimpleName(),
                         e.getLocalizedMessage());
+    }
+  }
+
+  /**
+   * Display an error message, formatted with the specified arguments, if any.
+   * Aditionaly, the exception stack trace is dumped if debug is enabled.
+   *
+   * @param e       the error cause
+   * @param message the error message
+   * @param args    the message arguments (optional)
+   */
+  private static void error(final Exception e, final String message,
+    final String... args) {
+    System.err.printf(message, args);
+    final boolean isDebugEnabled = "true".equals(System.getProperty("debug", "false"));
+    if (isDebugEnabled) {
+      e.printStackTrace();
     }
   }
 }

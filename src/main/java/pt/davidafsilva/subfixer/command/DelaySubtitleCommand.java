@@ -32,11 +32,15 @@ import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import java.util.function.Function;
 import java.util.function.BiFunction;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.Collections;
 import java.util.List;
 import pt.davidafsilva.subfixer.load.SubtitleEntry;
 import pt.davidafsilva.subfixer.load.SubtitleLoader;
+
+import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
 
 /**
  * This command applies a specified delay to the subtitle entries
@@ -45,8 +49,11 @@ import pt.davidafsilva.subfixer.load.SubtitleLoader;
  */
 public final class DelaySubtitleCommand implements Function<List<SubtitleEntry>, List<SubtitleEntry>> {
 
+  // the logger
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   // the entry transformation function
-  final BiFunction<SubtitleEntry, Duration, SubtitleEntry> ENTRY_TRANSFORMATION =
+  private static final BiFunction<SubtitleEntry, Duration, SubtitleEntry> ENTRY_TRANSFORMATION =
     (e, d) -> e.setTimeFrame(e.getStartTime().plus(d), e.getEndTime().plus(d));
 
   // "raw" properties
@@ -83,7 +90,10 @@ public final class DelaySubtitleCommand implements Function<List<SubtitleEntry>,
     try {
       return Duration.parse(delay);
     } catch (final DateTimeParseException e) {
-      throw new CommandExecutionException(delay + " is an invalid delay pattern");
+      final RuntimeException ce = new CommandExecutionException(delay +
+                                " is an invalid delay pattern");
+      LOGGER.log(Level.SEVERE, "invalid delay pattern", ce);
+      throw ce;
     }
   }
  }

@@ -27,6 +27,10 @@ package pt.davidafsilva.subfixer.load;
  */
 
 import java.util.function.BiConsumer;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
 
 /**
  * This consumer validates the first line of the entry being loaded as it shall
@@ -35,6 +39,9 @@ import java.util.function.BiConsumer;
  * @author david
  */
 final class ValidateEntryIndexLineConsumer implements BiConsumer<LoadContext, String> {
+
+  // the logger
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   @Override
   public void accept(final LoadContext loadContext, final String line) {
@@ -46,19 +53,22 @@ final class ValidateEntryIndexLineConsumer implements BiConsumer<LoadContext, St
     // first entry line, let's check if we have our entry index
     try {
       if (loadContext.getLoadedEntries().size()+1 != Integer.parseInt(line)) {
-        throw new IllegalStateException("unable to load subtitle file: " +
+        final RuntimeException e = new IllegalStateException("unable to load subtitle file: " +
                    "expected entry " + loadContext.getLoadedEntries().size()+1 +
                     ", got " + line);
+        LOGGER.log(Level.SEVERE, "unexpected subtitle entry header sequence", e);
+        throw e;
       }
 
       // jump to the next state
       loadContext.getCurrentEntryLoadContext().nextState();
     } catch (final NumberFormatException e) {
       // houston, we've a problem?
-      throw new IllegalStateException("unable to load subtitle file: " +
+      final RuntimeException e2 = new IllegalStateException("unable to load subtitle file: " +
                  "expected a positive (non-decimal) numeric value, got " +
                  line);
+      LOGGER.log(Level.SEVERE, "invalid subtitle entry header - NaN", e2);
+      throw e2;
     }
   }
-
 }

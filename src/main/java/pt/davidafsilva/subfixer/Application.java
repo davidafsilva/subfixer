@@ -31,12 +31,25 @@ package pt.davidafsilva.subfixer;
  import pt.davidafsilva.subfixer.command.DelaySubtitleCommand;
  import pt.davidafsilva.subfixer.command.LoadSubtitleEntriesCommand;
  import pt.davidafsilva.subfixer.command.PrintSubtitleEntriesCommand;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
 
 /**
  * The entry point for the subtitle-fixer utility
  * @author david
  */
 public final class Application {
+
+  // the global logger namespace
+  public static final String LOGGER_NAME = "pt.davidafsilva.subfixer";
+
+  // the logger
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+  static {
+    // default logging configuration
+    final String logLevel = System.getProperty("logLevel", "OFF");
+    LOGGER.setLevel(Level.parse(logLevel));
+  }
 
   // input indices
   private static final int DELAY_INDEX = 0;
@@ -75,29 +88,11 @@ public final class Application {
           )
         ), inputFile);
     } catch (final CommandExecutionException e) {
-      error(e, "error while executing the delay command:%n-> %s%n",
-                        e.getLocalizedMessage());
+      System.err.printf("error while executing command: %s%n", e.getLocalizedMessage());
     } catch (final Exception e) {
-      error(e, "an unexpected error has landed:%n-> %s: %s%n",
-                        e.getClass().getSimpleName(),
-                        e.getLocalizedMessage());
-    }
-  }
-
-  /**
-   * Display an error message, formatted with the specified arguments, if any.
-   * Aditionaly, the exception stack trace is dumped if debug is enabled.
-   *
-   * @param e       the error cause
-   * @param message the error message
-   * @param args    the message arguments (optional)
-   */
-  private static void error(final Exception e, final String message,
-    final String... args) {
-    System.err.printf(message, args);
-    final boolean isDebugEnabled = "true".equals(System.getProperty("debug", "false"));
-    if (isDebugEnabled) {
-      e.printStackTrace();
+      System.err.printf("an unexpected error has landed:%n\tcause: %s%n\tmessage: %s%n",
+                        e.getClass().getSimpleName(), e.getLocalizedMessage());
+      LOGGER.log(Level.SEVERE, "an unexpected error has landed", e);
     }
   }
 }

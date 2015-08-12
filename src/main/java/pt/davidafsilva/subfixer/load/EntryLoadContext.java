@@ -28,6 +28,10 @@ package pt.davidafsilva.subfixer.load;
 
 import java.time.LocalTime;
 import java.util.Objects;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
 
 /**
  * The entry load context that is used by the loader to keep entry loading
@@ -36,6 +40,9 @@ import java.util.Objects;
  * @author david
  */
 final class EntryLoadContext {
+
+  // the logger
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   // the current entry load state
   private EntryLoadState currentLoadState;
@@ -90,8 +97,10 @@ final class EntryLoadContext {
   void nextState() {
     final EntryLoadState[] possibleStates = EntryLoadState.values();
     if (currentLoadState.ordinal()+1 == possibleStates.length) {
-      throw new IllegalStateException("unable to progress to the next state, " +
-                                      "already at " + currentLoadState);
+      final RuntimeException e = new IllegalStateException(
+              "unable to progress to the next state, already at " + currentLoadState);
+      LOGGER.log(Level.SEVERE, "invalid state transition", e);
+      throw e;
     }
     this.currentLoadState = EntryLoadState.values()[currentLoadState.ordinal()+1];
   }

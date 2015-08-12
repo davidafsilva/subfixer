@@ -30,11 +30,14 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.function.BiConsumer;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import static java.time.temporal.ChronoField.HOUR_OF_DAY;
 import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
 import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 import static java.time.temporal.ChronoField.NANO_OF_SECOND;
+import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
 
 /**
  * This consumer validates and sets the time frame of the subtitle entry
@@ -43,6 +46,9 @@ import static java.time.temporal.ChronoField.NANO_OF_SECOND;
  * @author david
  */
 final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String> {
+
+  // the logger
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   // the time frame separator
   private static final String TIME_FRAME_SEPARATOR = " --> ";
@@ -65,9 +71,11 @@ final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String
   public void accept(final LoadContext loadContext, final String line) {
     final String[] times = line.split(TIME_FRAME_SEPARATOR);
     if (times.length != 2) {
-      throw new IllegalStateException("unable to load subtitle file: " +
+      final RuntimeException e = new IllegalStateException("unable to load subtitle file: " +
                  "expected a time frame with the format <start>" +
                  TIME_FRAME_SEPARATOR + "<end>, got " + line);
+      LOGGER.log(Level.SEVERE, "invalid subtitle entry time frame", e);
+      throw e;
     }
     loadContext.getCurrentEntryLoadContext().setTimeFrame(
       LocalTime.parse(times[0].trim(), DATE_TIME_FORMAT),

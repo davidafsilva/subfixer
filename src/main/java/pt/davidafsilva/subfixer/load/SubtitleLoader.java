@@ -41,7 +41,7 @@ package pt.davidafsilva.subfixer.load;
  import java.util.logging.Level;
  import pt.davidafsilva.subfixer.load.EntryLoadContext.EntryLoadState;
 
- import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
+ import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * The subtitle loaders, which takes an arbitrary subtitle file as input and

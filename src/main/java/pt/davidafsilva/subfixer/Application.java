@@ -31,8 +31,10 @@ package pt.davidafsilva.subfixer;
  import pt.davidafsilva.subfixer.command.DelaySubtitleCommand;
  import pt.davidafsilva.subfixer.command.LoadSubtitleEntriesCommand;
  import pt.davidafsilva.subfixer.command.PrintSubtitleEntriesCommand;
- import java.util.logging.Level;
  import java.util.logging.Logger;
+ import java.util.logging.Level;
+
+ import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * The entry point for the subtitle-fixer utility
@@ -40,16 +42,7 @@ package pt.davidafsilva.subfixer;
  */
 public final class Application {
 
-  // the global logger namespace
-  public static final String LOGGER_NAME = "pt.davidafsilva.subfixer";
-
-  // the logger
   private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
-  static {
-    // default logging configuration
-    final String logLevel = System.getProperty("logLevel", "OFF");
-    LOGGER.setLevel(Level.parse(logLevel));
-  }
 
   // input indices
   private static final int DELAY_INDEX = 0;

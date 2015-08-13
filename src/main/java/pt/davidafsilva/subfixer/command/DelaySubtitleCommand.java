@@ -40,7 +40,7 @@ import java.util.List;
 import pt.davidafsilva.subfixer.load.SubtitleEntry;
 import pt.davidafsilva.subfixer.load.SubtitleLoader;
 
-import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
+import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * This command applies a specified delay to the subtitle entries

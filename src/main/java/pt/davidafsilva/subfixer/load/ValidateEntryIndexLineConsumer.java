@@ -30,7 +30,7 @@ import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
+import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * This consumer validates the first line of the entry being loaded as it shall

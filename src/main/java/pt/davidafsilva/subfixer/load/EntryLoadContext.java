@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import static pt.davidafsilva.subfixer.Application.LOGGER_NAME;
+import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * The entry load context that is used by the loader to keep entry loading

@@ -42,6 +42,7 @@ package pt.davidafsilva.subfixer.load;
  import pt.davidafsilva.subfixer.load.EntryLoadContext.EntryLoadState;
 
  import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
+ import static pt.davidafsilva.subfixer.config.Configuration.CHARSET;
 
 /**
  * The subtitle loaders, which takes an arbitrary subtitle file as input and
@@ -88,7 +89,7 @@ public final class SubtitleLoader {
 
      // load the file
      final Path file = Paths.get(subtitleFile);
-     try (final BufferedReader br = Files.newBufferedReader(file)) {
+     try (final BufferedReader br = Files.newBufferedReader(file, CHARSET)) {
        // prepare for the first entry being loaded
        context.createEntryLoadContext();
 

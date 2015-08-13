@@ -34,6 +34,8 @@ import java.util.stream.IntStream;
 import java.util.List;
 import pt.davidafsilva.subfixer.load.SubtitleEntry;
 
+import static pt.davidafsilva.subfixer.config.Configuration.CHARSET;
+
 /**
  * This command prints the subtitle entries to a designated output stream.
  *
@@ -68,7 +70,7 @@ public final class PrintSubtitleEntriesCommand
                                     entry.getEndTime().toString(),
                                     entry.getText());
              })
-             .map(str -> str.getBytes(StandardCharsets.UTF_8))
+             .map(str -> str.getBytes(CHARSET))
              .forEach(this::write);
     // return them as is
     return entries;

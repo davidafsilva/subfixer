@@ -29,14 +29,14 @@ where the &lt;entry&gt; format:
 <start time> --> <end time><line break>
 <text 1><line break>
 ..
-<text N><line break>
+<text Z><line break>
 <line break>
 ```
 - &lt;index&gt; range is [1..N]
 - the timeframe (start and end times) has the format: *HH:mm:ss,SSS*
-- the entry text can contain multiple lines
-- the last &lt;line break&gt; is optional for the last entry of the file.
+- the entry text can contain multiple lines, but at least 1 is required
 - the &lt;line break&gt; is OS dependent
+- the last &lt;line break&gt; is optional for the last entry of the file.
 
 ## Notes
 I did this project entirely on default installation of Atom editor, without any fancy (in fact, none at all) Java IDE related features. Also, no internet access, yes, not even mobile networks - vacations they say :)
@@ -44,6 +44,7 @@ I did this project entirely on default installation of Atom editor, without any 
 It was really, really fun. Every Java developer should try this every once in a while with a small project such as this. After a few years working with IDEs, such as Intellij or Eclipse, you'll miss every single feature of them, i can promise you that! :)
 
 You'll learn, at least, that:
+
 1. you do need to declare imports, no one will do that for you
 2. you do need to declare imports, no one will do that for you
 3. you do need to declare imports, no one will do that for you

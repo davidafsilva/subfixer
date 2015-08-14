@@ -12,7 +12,7 @@ Where the &lt;delay pattern&gt; follows a [custom flavor](https://docs.oracle.co
 Optionally, there are two properties that can be specified via the `-Dproperty=value` option.
 
 | Property | Possible values                             | Default |
-|--------------------------------------------------------|---------|
+|----------|---------------------------------------------|---------|
 | logLevel | `OFF` `SEVERE` `INFO`                       | `OFF`   |
 | encoding | `ISO-8859-1` `US-ASCII` `UTF-8` `UTF-16` .. | `UTF-8` |
 

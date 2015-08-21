@@ -1,4 +1,4 @@
-# subfixer
+# subfixer [![Build Status](https://jenkins-davidafsilva.rhcloud.com/job/subfixer/badge/icon)](https://jenkins-davidafsilva.rhcloud.com/job/subfixer/)
 A CLI tool for subtitle delay fixing.
 
 This tool does not fully sync the subs, it only applies a global (positive or negative) delay to all of the entries.

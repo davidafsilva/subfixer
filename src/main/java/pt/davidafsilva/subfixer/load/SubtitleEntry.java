@@ -51,7 +51,7 @@ public final class SubtitleEntry {
    * @param text      the entry text
    */
   SubtitleEntry(final LocalTime startTime, final LocalTime endTime,
-                final String text) {
+      final String text) {
     this.startTime = Objects.requireNonNull(startTime, "startTime");
     this.endTime = Objects.requireNonNull(endTime, "endTime");
     this.text = Objects.requireNonNull(text, "text");
@@ -59,18 +59,21 @@ public final class SubtitleEntry {
 
   /**
    * Returns the start time of the entry
+   *
    * @return the start time
    */
   public LocalTime getStartTime() { return startTime; }
 
   /**
    * Returns the end time of the entry
+   *
    * @return the end time
    */
   public LocalTime getEndTime() { return endTime; }
 
   /**
    * Returns the text of the entry
+   *
    * @return the actual text
    */
   public String getText() { return text; }

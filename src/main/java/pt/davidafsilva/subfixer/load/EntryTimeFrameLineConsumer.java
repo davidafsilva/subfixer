@@ -30,13 +30,13 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.function.BiConsumer;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.time.temporal.ChronoField.HOUR_OF_DAY;
 import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
-import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 import static java.time.temporal.ChronoField.NANO_OF_SECOND;
+import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
@@ -55,16 +55,17 @@ final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String
 
   // the date time format for the entry timestamps
   private static final DateTimeFormatter DATE_TIME_FORMAT;
+
   static {
     DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
-                .appendValue(HOUR_OF_DAY, 2)
-                .appendLiteral(':')
-                .appendValue(MINUTE_OF_HOUR, 2)
-                .appendLiteral(':')
-                .appendValue(SECOND_OF_MINUTE, 2)
-                .appendLiteral(',')
-                .appendFraction(NANO_OF_SECOND, 0, 3, false)
-                .toFormatter();
+        .appendValue(HOUR_OF_DAY, 2)
+        .appendLiteral(':')
+        .appendValue(MINUTE_OF_HOUR, 2)
+        .appendLiteral(':')
+        .appendValue(SECOND_OF_MINUTE, 2)
+        .appendLiteral(',')
+        .appendFraction(NANO_OF_SECOND, 0, 3, false)
+        .toFormatter();
   }
 
   @Override
@@ -72,14 +73,14 @@ final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String
     final String[] times = line.split(TIME_FRAME_SEPARATOR);
     if (times.length != 2) {
       final RuntimeException e = new IllegalStateException("unable to load subtitle file: " +
-                 "expected a time frame with the format <start>" +
-                 TIME_FRAME_SEPARATOR + "<end>, got " + line);
+          "expected a time frame with the format <start>" +
+          TIME_FRAME_SEPARATOR + "<end>, got " + line);
       LOGGER.log(Level.SEVERE, "invalid subtitle entry time frame", e);
       throw e;
     }
     loadContext.getCurrentEntryLoadContext().setTimeFrame(
-      LocalTime.parse(times[0].trim(), DATE_TIME_FORMAT),
-      LocalTime.parse(times[1].trim(), DATE_TIME_FORMAT)
+        LocalTime.parse(times[0].trim(), DATE_TIME_FORMAT),
+        LocalTime.parse(times[1].trim(), DATE_TIME_FORMAT)
     );
 
     // jump to the next state

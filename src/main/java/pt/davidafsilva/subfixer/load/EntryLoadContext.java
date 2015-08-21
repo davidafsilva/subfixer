@@ -28,8 +28,8 @@ package pt.davidafsilva.subfixer.load;
 
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
@@ -96,13 +96,13 @@ final class EntryLoadContext {
    */
   void nextState() {
     final EntryLoadState[] possibleStates = EntryLoadState.values();
-    if (currentLoadState.ordinal()+1 == possibleStates.length) {
+    if (currentLoadState.ordinal() + 1 == possibleStates.length) {
       final RuntimeException e = new IllegalStateException(
-              "unable to progress to the next state, already at " + currentLoadState);
+          "unable to progress to the next state, already at " + currentLoadState);
       LOGGER.log(Level.SEVERE, "invalid state transition", e);
       throw e;
     }
-    this.currentLoadState = EntryLoadState.values()[currentLoadState.ordinal()+1];
+    this.currentLoadState = EntryLoadState.values()[currentLoadState.ordinal() + 1];
   }
 
   /**

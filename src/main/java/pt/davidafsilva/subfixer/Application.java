@@ -26,18 +26,20 @@ package pt.davidafsilva.subfixer;
  * #L%
  */
 
- import pt.davidafsilva.subfixer.command.CommandExecutor;
- import pt.davidafsilva.subfixer.command.CommandExecutionException;
- import pt.davidafsilva.subfixer.command.DelaySubtitleCommand;
- import pt.davidafsilva.subfixer.command.LoadSubtitleEntriesCommand;
- import pt.davidafsilva.subfixer.command.PrintSubtitleEntriesCommand;
- import java.util.logging.Logger;
- import java.util.logging.Level;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
- import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
+import pt.davidafsilva.subfixer.command.CommandExecutionException;
+import pt.davidafsilva.subfixer.command.CommandExecutor;
+import pt.davidafsilva.subfixer.command.DelaySubtitleCommand;
+import pt.davidafsilva.subfixer.command.LoadSubtitleEntriesCommand;
+import pt.davidafsilva.subfixer.command.PrintSubtitleEntriesCommand;
+
+import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * The entry point for the subtitle-fixer utility
+ *
  * @author david
  */
 public final class Application {
@@ -50,20 +52,21 @@ public final class Application {
 
   /**
    * The main method, called from the command line
+   *
    * @param args The command line arguments
    */
   public static void main(final String[] args) {
     // input validation
     if (args.length != 2) {
       System.err.printf(
-        "incorrect usage - required arguments are: <delay pattern> <input file>%n" +
-        " Examples of valid delay patterns are:%n" +
-        "  1. PT20.345S = 20.345 seconds%n" +
-        "  2. PT15M     = 15 minutes%n" +
-        "  3. PT10H     = 10 hours%n" +
-        "  4. PT-6H3M   = -6 hours and +3 minutes%n" +
-        "  5. -PT6H3M   = -6 hours and -3 minutes%n" +
-        " Please refer to the ISO-8601 standard for more information.%n"
+          "incorrect usage - required arguments are: <delay pattern> <input file>%n" +
+              " Examples of valid delay patterns are:%n" +
+              "  1. PT20.345S = 20.345 seconds%n" +
+              "  2. PT15M     = 15 minutes%n" +
+              "  3. PT10H     = 10 hours%n" +
+              "  4. PT-6H3M   = -6 hours and +3 minutes%n" +
+              "  5. -PT6H3M   = -6 hours and -3 minutes%n" +
+              " Please refer to the ISO-8601 standard for more information.%n"
       );
       System.exit(1);
     }
@@ -75,16 +78,16 @@ public final class Application {
     try {
       // chain and execute the commands
       CommandExecutor.getInstance().execute(
-        new LoadSubtitleEntriesCommand().andThen(
-          new DelaySubtitleCommand(delay).andThen(
-            new PrintSubtitleEntriesCommand(System.out)
-          )
-        ), inputFile);
+          new LoadSubtitleEntriesCommand().andThen(
+              new DelaySubtitleCommand(delay).andThen(
+                  new PrintSubtitleEntriesCommand(System.out)
+              )
+          ), inputFile);
     } catch (final CommandExecutionException e) {
       System.err.printf("error while executing command: %s%n", e.getLocalizedMessage());
     } catch (final Exception e) {
       System.err.printf("an unexpected error has landed:%n\tcause: %s%n\tmessage: %s%n",
-                        e.getClass().getSimpleName(), e.getLocalizedMessage());
+          e.getClass().getSimpleName(), e.getLocalizedMessage());
       LOGGER.log(Level.SEVERE, "an unexpected error has landed", e);
     }
   }

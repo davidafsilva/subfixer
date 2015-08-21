@@ -26,15 +26,14 @@ package pt.davidafsilva.subfixer.command;
  * #L%
  */
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.IntStream;
-import java.util.List;
-import pt.davidafsilva.subfixer.load.SubtitleEntry;
 
-//import static pt.davidafsilva.subfixer.config.Configuration.CHARSET;
+import pt.davidafsilva.subfixer.load.SubtitleEntry;
 
 /**
  * This command prints the subtitle entries to a designated output stream.
@@ -42,7 +41,7 @@ import pt.davidafsilva.subfixer.load.SubtitleEntry;
  * @author david
  */
 public final class PrintSubtitleEntriesCommand
-                implements Function<List<SubtitleEntry>, List<SubtitleEntry>> {
+    implements Function<List<SubtitleEntry>, List<SubtitleEntry>> {
 
   // the output format
   private static final String ENTRY_FORMAT = "%d%n%s --> %s%n%s%n%n";
@@ -63,15 +62,15 @@ public final class PrintSubtitleEntriesCommand
   public List<SubtitleEntry> apply(final List<SubtitleEntry> entries) {
     // print the entries
     IntStream.range(0, entries.size())
-             .mapToObj(idx -> {
-               final SubtitleEntry entry = entries.get(idx);
-               return String.format(ENTRY_FORMAT, idx+1,
-                                    entry.getStartTime().toString(),
-                                    entry.getEndTime().toString(),
-                                    entry.getText());
-             })
-             .map(str -> str.getBytes(StandardCharsets.UTF_8))
-             .forEach(this::write);
+        .mapToObj(idx -> {
+          final SubtitleEntry entry = entries.get(idx);
+          return String.format(ENTRY_FORMAT, idx + 1,
+              entry.getStartTime().toString(),
+              entry.getEndTime().toString(),
+              entry.getText());
+        })
+        .map(str -> str.getBytes(StandardCharsets.UTF_8))
+        .forEach(this::write);
     // return them as is
     return entries;
   }
@@ -86,7 +85,7 @@ public final class PrintSubtitleEntriesCommand
       out.write(entry);
     } catch (final IOException e) {
       throw new CommandExecutionException("unable to write entry data to output"
-                                          + " stream.", e);
+          + " stream.", e);
     }
   }
 }

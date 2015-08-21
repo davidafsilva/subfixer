@@ -26,9 +26,10 @@ package pt.davidafsilva.subfixer.load;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
+
 import pt.davidafsilva.subfixer.load.EntryLoadContext.EntryLoadState;
 
 /**

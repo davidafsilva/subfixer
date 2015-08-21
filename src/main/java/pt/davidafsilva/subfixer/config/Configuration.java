@@ -26,9 +26,9 @@ package pt.davidafsilva.subfixer.config;
  * #L%
  */
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This configuration class contains all the necessary runtime configurations
@@ -38,28 +38,26 @@ import java.nio.charset.Charset;
  */
 public final class Configuration {
 
-  // private constructor
-  private Configuration() {}
-
   // the global logger namespace
   public static final String LOGGER_NAME = "pt.davidafsilva.subfixer";
-
   // the log level
   public static final Level LOGGER_LEVEL = Level.parse(System.getProperty("logLevel", "OFF"));
-
+  // the charset to be used when loading and write data
+  public static final Charset CHARSET = Charset.forName(System.getProperty("encoding", "UTF-8"));
   // the logger instance
   private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   static {
     // default logging configuration
     LOGGER.setLevel(LOGGER_LEVEL);
   }
 
-  // the charset to be used when loading and write data
-  public static final Charset CHARSET = Charset.forName(System.getProperty("encoding", "UTF-8"));
-
   // log loaded configuration
   static {
     LOGGER.info(String.format("{%n\tLogger: %s%n\tLog level: %s%n\tCharset: %s%n}",
-                              LOGGER_NAME, LOGGER_LEVEL, CHARSET));
+        LOGGER_NAME, LOGGER_LEVEL, CHARSET));
   }
+
+  // private constructor
+  private Configuration() {}
 }

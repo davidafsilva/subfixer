@@ -26,14 +26,14 @@ package pt.davidafsilva.subfixer.load;
  * #L%
  */
 
- import java.util.function.BiConsumer;
+import java.util.function.BiConsumer;
 
- /**
-  * This consumer either appends the input line to the text of the entry or
-  * terminates the text loading phase if it reached the end of the entry text.
-  *
-  * @author david
-  */
+/**
+ * This consumer either appends the input line to the text of the entry or
+ * terminates the text loading phase if it reached the end of the entry text.
+ *
+ * @author david
+ */
 final class EntryTextLineConsumer implements BiConsumer<LoadContext, String> {
 
   @Override

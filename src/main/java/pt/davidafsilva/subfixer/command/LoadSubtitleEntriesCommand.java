@@ -26,8 +26,9 @@ package pt.davidafsilva.subfixer.command;
  * #L%
  */
 
-import java.util.function.Function;
 import java.util.List;
+import java.util.function.Function;
+
 import pt.davidafsilva.subfixer.load.SubtitleEntry;
 import pt.davidafsilva.subfixer.load.SubtitleLoader;
 

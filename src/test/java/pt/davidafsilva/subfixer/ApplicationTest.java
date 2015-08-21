@@ -28,8 +28,6 @@ package pt.davidafsilva.subfixer;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * The subtitle loader unit tests.
  *

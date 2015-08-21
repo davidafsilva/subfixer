@@ -26,14 +26,14 @@ package pt.davidafsilva.subfixer.load;
  * #L%
  */
 
- import java.util.function.BiConsumer;
+import java.util.function.BiConsumer;
 
- /**
-  * This consumer terminates the entry being loaded and initiates a new load
-  * step.
-  *
-  * @author david
-  */
+/**
+ * This consumer terminates the entry being loaded and initiates a new load
+ * step.
+ *
+ * @author david
+ */
 final class EntryFinalLineConsumer implements BiConsumer<LoadContext, String> {
 
   @Override
@@ -42,9 +42,9 @@ final class EntryFinalLineConsumer implements BiConsumer<LoadContext, String> {
       case FINAL:
         // create the subtitle entry
         final SubtitleEntry entry = new SubtitleEntry(
-          loadContext.getCurrentEntryLoadContext().getStartTime(),
-          loadContext.getCurrentEntryLoadContext().getEndTime(),
-          loadContext.getCurrentEntryLoadContext().getText()
+            loadContext.getCurrentEntryLoadContext().getStartTime(),
+            loadContext.getCurrentEntryLoadContext().getEndTime(),
+            loadContext.getCurrentEntryLoadContext().getText()
         );
 
         // add it to the context

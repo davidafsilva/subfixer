@@ -27,10 +27,11 @@ package pt.davidafsilva.subfixer.load;
  */
 
 import org.junit.Test;
+
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * The subtitle loader unit tests.
@@ -42,7 +43,7 @@ public final class SubtitleLoaderTest {
   @Test
   public void test_load_3entries() throws Exception {
     final List<SubtitleEntry> entries = SubtitleLoader.load(
-                          getClass().getResource("/3entry.srt").getPath());
+        getClass().getResource("/3entry.srt").getPath());
     assertNotNull(entries);
     assertEquals(3, entries.size());
   }

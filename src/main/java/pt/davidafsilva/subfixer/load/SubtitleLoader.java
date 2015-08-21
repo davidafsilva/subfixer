@@ -26,23 +26,23 @@ package pt.davidafsilva.subfixer.load;
  * #L%
  */
 
- import java.io.BufferedReader;
- import java.nio.charset.StandardCharsets;
- import java.io.IOException;
- import java.nio.file.Files;
- import java.nio.file.Paths;
- import java.nio.file.Path;
- import java.util.Collections;
- import java.util.List;
- import java.util.Map;
- import java.util.HashMap;
- import java.util.function.BiConsumer;
- import java.util.logging.Logger;
- import java.util.logging.Level;
- import pt.davidafsilva.subfixer.load.EntryLoadContext.EntryLoadState;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
- import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
- import static pt.davidafsilva.subfixer.config.Configuration.CHARSET;
+import pt.davidafsilva.subfixer.load.EntryLoadContext.EntryLoadState;
+
+import static pt.davidafsilva.subfixer.config.Configuration.CHARSET;
+import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * The subtitle loaders, which takes an arbitrary subtitle file as input and
@@ -57,21 +57,21 @@ public final class SubtitleLoader {
 
   // the entry states consumers
   private static final Map<EntryLoadState, BiConsumer<LoadContext, String>> STATE_COMSUMERS;
-  static {
-    final Map<EntryLoadState, BiConsumer<LoadContext, String>> consumers = new HashMap<>();
-    consumers.put(EntryLoadState.INITIAL, new ValidateEntryIndexLineConsumer());
-    consumers.put(EntryLoadState.TIME_FRAME, new EntryTimeFrameLineConsumer());
-    consumers.put(EntryLoadState.TEXT, new EntryTextLineConsumer()
-                              .andThen(new EntryFinalLineConsumer()));
-    STATE_COMSUMERS = Collections.unmodifiableMap(consumers);
-  }
-
   // the default NO-OP consumer (safe default)
   private static final BiConsumer<LoadContext, String> DEFAULT_CONSUMER = (c, s) -> {
     final RuntimeException e = new IllegalStateException("unsupported state");
     LOGGER.log(Level.SEVERE, "invalid state", e);
     throw e;
   };
+
+  static {
+    final Map<EntryLoadState, BiConsumer<LoadContext, String>> consumers = new HashMap<>();
+    consumers.put(EntryLoadState.INITIAL, new ValidateEntryIndexLineConsumer());
+    consumers.put(EntryLoadState.TIME_FRAME, new EntryTimeFrameLineConsumer());
+    consumers.put(EntryLoadState.TEXT, new EntryTextLineConsumer()
+        .andThen(new EntryFinalLineConsumer()));
+    STATE_COMSUMERS = Collections.unmodifiableMap(consumers);
+  }
 
   // private constructor
   private SubtitleLoader() {}
@@ -83,41 +83,41 @@ public final class SubtitleLoader {
    * @return the ordered list of subtitle entries
    * @throws IOException if an error occurs while reading the source file
    */
-   public static List<SubtitleEntry> load(final String subtitleFile) throws IOException {
-     // creates a new load context
-     final LoadContext context = new LoadContext();
+  public static List<SubtitleEntry> load(final String subtitleFile) throws IOException {
+    // creates a new load context
+    final LoadContext context = new LoadContext();
 
-     // load the file
-     final Path file = Paths.get(subtitleFile);
-     try (final BufferedReader br = Files.newBufferedReader(file, CHARSET)) {
-       // prepare for the first entry being loaded
-       context.createEntryLoadContext();
+    // load the file
+    final Path file = Paths.get(subtitleFile);
+    try (final BufferedReader br = Files.newBufferedReader(file, CHARSET)) {
+      // prepare for the first entry being loaded
+      context.createEntryLoadContext();
 
-       // read line by line
-       String line;
-       int number = 0;
-       while ((line = br.readLine()) != null) {
-         line = line.trim();
-         number++;
+      // read line by line
+      String line;
+      int number = 0;
+      while ((line = br.readLine()) != null) {
+        line = line.trim();
+        number++;
 
-         // log the line read
-         LOGGER.info(String.format("line[%d]=%s", number, line));
+        // log the line read
+        LOGGER.info(String.format("line[%d]=%s", number, line));
 
-         // apply the specific consumer
-         consume(context, line);
-       }
+        // apply the specific consumer
+        consume(context, line);
+      }
 
-       // consume after we exit the loop in order to fill the last entry if not
-       // processed, otherwise, nothing bad shall happen
-       consume(context, "");
-     } catch (final IOException e) {
-       // log and rethrow
-       LOGGER.log(Level.SEVERE, "error reading file", e);
-       throw e;
-     }
+      // consume after we exit the loop in order to fill the last entry if not
+      // processed, otherwise, nothing bad shall happen
+      consume(context, "");
+    } catch (final IOException e) {
+      // log and rethrow
+      LOGGER.log(Level.SEVERE, "error reading file", e);
+      throw e;
+    }
 
-     // return the loaded entries
-     return context.getLoadedEntries();
+    // return the loaded entries
+    return context.getLoadedEntries();
   }
 
   /**

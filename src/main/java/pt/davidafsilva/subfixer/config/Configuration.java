@@ -27,8 +27,15 @@ package pt.davidafsilva.subfixer.config;
  */
 
 import java.nio.charset.Charset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.time.temporal.ChronoField.HOUR_OF_DAY;
+import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
+import static java.time.temporal.ChronoField.NANO_OF_SECOND;
+import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 
 /**
  * This configuration class contains all the necessary runtime configurations
@@ -50,6 +57,21 @@ public final class Configuration {
   static {
     // default logging configuration
     LOGGER.setLevel(LOGGER_LEVEL);
+  }
+
+  // the date time format for the entry timestamps
+  public static final DateTimeFormatter DATE_TIME_FORMAT;
+
+  static {
+    DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
+        .appendValue(HOUR_OF_DAY, 2)
+        .appendLiteral(':')
+        .appendValue(MINUTE_OF_HOUR, 2)
+        .appendLiteral(':')
+        .appendValue(SECOND_OF_MINUTE, 2)
+        .appendLiteral(',')
+        .appendFraction(NANO_OF_SECOND, 0, 3, false)
+        .toFormatter();
   }
 
   // log loaded configuration

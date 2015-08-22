@@ -27,16 +27,11 @@ package pt.davidafsilva.subfixer.load;
  */
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.time.temporal.ChronoField.HOUR_OF_DAY;
-import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
-import static java.time.temporal.ChronoField.NANO_OF_SECOND;
-import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
+import static pt.davidafsilva.subfixer.config.Configuration.DATE_TIME_FORMAT;
 import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
@@ -53,20 +48,7 @@ final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String
   // the time frame separator
   private static final String TIME_FRAME_SEPARATOR = " --> ";
 
-  // the date time format for the entry timestamps
-  private static final DateTimeFormatter DATE_TIME_FORMAT;
 
-  static {
-    DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
-        .appendValue(HOUR_OF_DAY, 2)
-        .appendLiteral(':')
-        .appendValue(MINUTE_OF_HOUR, 2)
-        .appendLiteral(':')
-        .appendValue(SECOND_OF_MINUTE, 2)
-        .appendLiteral(',')
-        .appendFraction(NANO_OF_SECOND, 0, 3, false)
-        .toFormatter();
-  }
 
   @Override
   public void accept(final LoadContext loadContext, final String line) {

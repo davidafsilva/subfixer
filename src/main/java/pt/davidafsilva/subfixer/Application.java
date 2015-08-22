@@ -44,7 +44,19 @@ import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
  */
 public final class Application {
 
+  // the logger
   private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
+  // the usage help message
+  static final String USAGE =
+      "incorrect usage - required arguments are: <delay pattern> <input file>%n" +
+          " Examples of valid delay patterns are:%n" +
+          "  1. PT20.345S = 20.345 seconds%n" +
+          "  2. PT15M     = 15 minutes%n" +
+          "  3. PT10H     = 10 hours%n" +
+          "  4. PT-6H3M   = -6 hours and +3 minutes%n" +
+          "  5. -PT6H3M   = -6 hours and -3 minutes%n" +
+          " Please refer to the ISO-8601 standard for more information.%n";
 
   // input indices
   private static final int DELAY_INDEX = 0;
@@ -58,17 +70,8 @@ public final class Application {
   public static void main(final String[] args) {
     // input validation
     if (args.length != 2) {
-      System.err.printf(
-          "incorrect usage - required arguments are: <delay pattern> <input file>%n" +
-              " Examples of valid delay patterns are:%n" +
-              "  1. PT20.345S = 20.345 seconds%n" +
-              "  2. PT15M     = 15 minutes%n" +
-              "  3. PT10H     = 10 hours%n" +
-              "  4. PT-6H3M   = -6 hours and +3 minutes%n" +
-              "  5. -PT6H3M   = -6 hours and -3 minutes%n" +
-              " Please refer to the ISO-8601 standard for more information.%n"
-      );
-      System.exit(1);
+      System.err.printf(USAGE);
+      return;
     }
 
     // extract the input from args

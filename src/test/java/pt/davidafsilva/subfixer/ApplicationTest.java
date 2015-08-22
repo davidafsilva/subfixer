@@ -26,18 +26,112 @@ package pt.davidafsilva.subfixer;
  * #L%
  */
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+
+import static java.lang.System.lineSeparator;
+import static org.junit.Assert.assertEquals;
 
 /**
  * The subtitle loader unit tests.
  *
  * @author david
  */
+@RunWith(Parameterized.class)
 public final class ApplicationTest {
 
-  @Test
-  public void test_invalid_arguments() throws Exception {
-    Application.main(new String[0]);
+  // the default stderr
+  private static final PrintStream DEFAULT_STDERR = System.err;
+  // the default stdout
+  private static final PrintStream DEFAULT_STDOUT = System.out;
+
+  // the output stream of our overridden stderr
+  private static final ByteArrayOutputStream ERR = new ByteArrayOutputStream();
+
+  // the output stream of our overridden stdout
+  private static final ByteArrayOutputStream OUT = new ByteArrayOutputStream();
+
+  // ----------------
+  // test cases
+  // ----------------
+
+  /**
+   * Builds and return the test cases
+   *
+   * @return the test cases
+   */
+  @Parameterized.Parameters
+  public static Collection<Object[]> buildTestCases() {
+    return Arrays.asList(new Object[][]{
+        {
+            new String[0],
+            Optional.of(Application.USAGE.replaceAll("%n", lineSeparator())),
+            Optional.empty()
+        },
+        {
+            new String[1],
+            Optional.of(Application.USAGE.replaceAll("%n", lineSeparator())),
+            Optional.empty()
+        },
+        {
+            new String[]{"PT1m", ApplicationTest.class.getResource("/1entry.srt").getPath()},
+            Optional.empty(),
+            Optional.of("1\n00:05:05,704 --> 00:05:07,039\nSe me dás licença, sobrinho,\n\n")
+        }
+    });
   }
 
+  // ----------------
+  // test parameters
+  // ----------------
+
+  @Parameterized.Parameter(0)
+  public String[] input;
+
+  @Parameterized.Parameter(1)
+  public Optional<String> expectedError;
+
+  @Parameterized.Parameter(2)
+  public Optional<String> expectedOutput;
+
+  @BeforeClass
+  public static void setupStreams() {
+    System.setOut(new PrintStream(OUT));
+    System.setErr(new PrintStream(ERR));
+  }
+
+  @AfterClass
+  public static void cleanStreams() throws IOException {
+    try {
+      OUT.close();
+      ERR.close();
+    } finally {
+      System.setOut(DEFAULT_STDOUT);
+      System.setErr(DEFAULT_STDERR);
+    }
+  }
+
+  @After
+  public void cleanFailureTests() throws IOException {
+    OUT.reset();
+    ERR.reset();
+  }
+
+  @Test
+  public void testApplication() {
+    Application.main(input);
+    expectedError.ifPresent(expected -> assertEquals(expected, ERR.toString()));
+    expectedOutput.ifPresent(expected -> assertEquals(expected, OUT.toString()));
+  }
 }

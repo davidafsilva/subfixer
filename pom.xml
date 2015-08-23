@@ -34,7 +34,7 @@
         <javac.version>1.8</javac.version>
 
         <!-- JaCoCo -->
-        <jacoco.version>0.7.5.201505241946</jacoco.version>
+        <jacoco.version>0.7.4.201502262128</jacoco.version>
         <jacoco.reportFilePath>${project.build.directory}/jacoco.exec</jacoco.reportFilePath>
         <jacoco.reportPagePath>${project.reporting.outputDirectory}/jacoco</jacoco.reportPagePath>
     </properties>

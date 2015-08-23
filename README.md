@@ -50,4 +50,4 @@ You'll learn, at least, that:
 3. you do need to declare imports, no one will do that for you
 4. imports. imports.
 
-Well, this is almost a blog post, lets stop it here. Bottom line is, the code might have some weird formatting as well as unused imports and other smelly lines of code. I did not review the code nor implement the proper tests, yet.
+Well, this is almost a blog post, lets stop it here. ~~Bottom line is, the code might have some weird formatting as well as unused imports and other smelly lines of code. I did not review the code nor implement the proper tests, yet~~.

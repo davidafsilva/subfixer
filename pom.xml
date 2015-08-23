@@ -21,6 +21,7 @@
     <properties>
         <!-- code encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javac.version>1.8</javac.version>
 
         <!-- test dependencies versions -->
         <junit.version>4.11</junit.version>
@@ -31,12 +32,14 @@
         <maven.jar.version>2.6</maven.jar.version>
         <maven.javadoc.version>2.10.1</maven.javadoc.version>
         <maven.license.version>1.7</maven.license.version>
-        <javac.version>1.8</javac.version>
+        <!-- coverall version -->
+        <maven.coverall.version>3.2.0</maven.coverall.version>
 
         <!-- JaCoCo -->
         <jacoco.version>0.7.4.201502262128</jacoco.version>
         <jacoco.reportFilePath>${project.build.directory}/jacoco.exec</jacoco.reportFilePath>
         <jacoco.reportPagePath>${project.reporting.outputDirectory}/jacoco</jacoco.reportPagePath>
+
     </properties>
 
     <!-- project dependencies -->
@@ -146,6 +149,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${maven.coverall.version}</version>
             </plugin>
 
             <!-- license handling -->

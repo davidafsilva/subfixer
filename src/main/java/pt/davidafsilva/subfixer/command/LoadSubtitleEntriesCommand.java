@@ -44,7 +44,7 @@ public final class LoadSubtitleEntriesCommand implements Function<String, List<S
     try {
       return SubtitleLoader.load(inputFile);
     } catch (final Exception e) {
-      throw new CommandExecutionException("error loading subtitles from file", e);
+      throw new CommandExecutionException(e.getMessage(), e);
     }
   }
 }

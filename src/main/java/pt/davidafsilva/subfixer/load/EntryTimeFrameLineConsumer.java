@@ -27,6 +27,7 @@ package pt.davidafsilva.subfixer.load;
  */
 
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,8 +49,6 @@ final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String
   // the time frame separator
   private static final String TIME_FRAME_SEPARATOR = " --> ";
 
-
-
   @Override
   public void accept(final LoadContext loadContext, final String line) {
     final String[] times = line.split(TIME_FRAME_SEPARATOR);
@@ -60,10 +59,18 @@ final class EntryTimeFrameLineConsumer implements BiConsumer<LoadContext, String
       LOGGER.log(Level.SEVERE, "invalid subtitle entry time frame", e);
       throw e;
     }
-    loadContext.getCurrentEntryLoadContext().setTimeFrame(
-        LocalTime.parse(times[0].trim(), DATE_TIME_FORMAT),
-        LocalTime.parse(times[1].trim(), DATE_TIME_FORMAT)
-    );
+    try {
+      loadContext.getCurrentEntryLoadContext().setTimeFrame(
+          LocalTime.parse(times[0].trim(), DATE_TIME_FORMAT),
+          LocalTime.parse(times[1].trim(), DATE_TIME_FORMAT)
+      );
+    } catch (final DateTimeParseException e) {
+      final RuntimeException e2 = new IllegalStateException(String.format(
+          "unable to load subtitle file: invalid time format for entry %d",
+          loadContext.getLoadedEntries().size() + 1), e);
+      LOGGER.log(Level.SEVERE, "invalid subtitle entry time frame", e2);
+      throw e2;
+    }
 
     // jump to the next state
     loadContext.getCurrentEntryLoadContext().nextState();

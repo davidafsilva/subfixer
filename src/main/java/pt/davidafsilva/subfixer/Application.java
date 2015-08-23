@@ -58,6 +58,9 @@ public final class Application {
           "  5. -PT6H3M   = -6 hours and -3 minutes%n" +
           " Please refer to the ISO-8601 standard for more information.%n";
 
+  // the command error message
+  static final String COMMAND_ERROR = "error while executing command: %s%n";
+
   // input indices
   private static final int DELAY_INDEX = 0;
   private static final int INPUT_FILE_INDEX = 1;
@@ -87,7 +90,7 @@ public final class Application {
               )
           ), inputFile);
     } catch (final CommandExecutionException e) {
-      System.err.printf("error while executing command: %s%n", e.getLocalizedMessage());
+      System.err.printf(COMMAND_ERROR, e.getLocalizedMessage());
     } catch (final Exception e) {
       System.err.printf("an unexpected error has landed:%n\tcause: %s%n\tmessage: %s%n",
           e.getClass().getSimpleName(), e.getLocalizedMessage());

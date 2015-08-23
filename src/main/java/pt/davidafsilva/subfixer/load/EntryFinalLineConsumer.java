@@ -27,6 +27,10 @@ package pt.davidafsilva.subfixer.load;
  */
 
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static pt.davidafsilva.subfixer.config.Configuration.LOGGER_NAME;
 
 /**
  * This consumer terminates the entry being loaded and initiates a new load
@@ -36,10 +40,21 @@ import java.util.function.BiConsumer;
  */
 final class EntryFinalLineConsumer implements BiConsumer<LoadContext, String> {
 
+  // the logger
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   @Override
   public void accept(final LoadContext loadContext, final String line) {
     switch (loadContext.getCurrentEntryLoadContext().getCurrentLoadState()) {
       case FINAL:
+        final String text = loadContext.getCurrentEntryLoadContext().getText();
+        if (text.isEmpty()) {
+          final RuntimeException e = new IllegalStateException("unable to load subtitle file: " +
+              "no subtitle entry text for entry " + loadContext.getLoadedEntries().size() + 1);
+          LOGGER.log(Level.SEVERE, "no subtitle entry text", e);
+          throw e;
+        }
+
         // create the subtitle entry
         final SubtitleEntry entry = new SubtitleEntry(
             loadContext.getCurrentEntryLoadContext().getStartTime(),

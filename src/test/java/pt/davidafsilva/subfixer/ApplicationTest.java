@@ -85,11 +85,51 @@ public final class ApplicationTest {
             Optional.empty()
         },
         {
-            new String[]{"PT1m", ApplicationTest.class.getResource("/1entry.srt").getPath()},
+            new String[]{"PT1m", subtitleFile("1entry_invalidIndex.srt")},
+            Optional.of(String.format(Application.COMMAND_ERROR, "unable to load subtitle file: " +
+                "expected entry 01, got 2")),
+            Optional.empty()
+        },
+        {
+            new String[]{"PT1m", subtitleFile("1entry_noIndex.srt")},
+            Optional.of(String.format(Application.COMMAND_ERROR, "unable to load subtitle file: " +
+                "expected a positive (non-decimal) numeric value, got 00:04:05,704 --> 00:04:07,039")),
+            Optional.empty()
+        },
+        {
+            new String[]{"PT1m", subtitleFile("1entry_invalidTimeFrameFormat.srt")},
+            Optional.of(String.format(Application.COMMAND_ERROR, "unable to load subtitle file: " +
+                "expected a time frame with the format <start> --> <end>, got 00:04:05,704 00:04:07,039")),
+            Optional.empty()
+        },
+        {
+            new String[]{"PT1m", subtitleFile("1entry_invalidTimeFrameDateTime.srt")},
+            Optional.of(String.format(Application.COMMAND_ERROR, "unable to load subtitle file: " +
+                "invalid time format for entry 1")),
+            Optional.empty()
+        },
+        {
+            new String[]{"PT1m", subtitleFile("1entry_noText.srt")},
+            Optional.of(String.format(Application.COMMAND_ERROR, "unable to load subtitle file: " +
+                "no subtitle entry text for entry 01")),
+            Optional.empty()
+        },
+        {
+            new String[]{"PT1m", subtitleFile("1entry.srt")},
             Optional.empty(),
             Optional.of("1\n00:05:05,704 --> 00:05:07,039\nSe me dás licença, sobrinho,\n\n")
         }
     });
+  }
+
+  /**
+   * Returns the subtitle file full path
+   *
+   * @param file the subtitle file name
+   * @return the file full path
+   */
+  private static String subtitleFile(final String file) {
+    return ApplicationTest.class.getResource("/" + file).getPath();
   }
 
   // ----------------

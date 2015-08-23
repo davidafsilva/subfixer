@@ -118,6 +118,24 @@ public final class ApplicationTest {
             new String[]{"PT1m", subtitleFile("1entry.srt")},
             Optional.empty(),
             Optional.of("1\n00:05:05,704 --> 00:05:07,039\nSe me dás licença, sobrinho,\n\n")
+        },
+        {
+            new String[]{"PT1m", subtitleFile("3entry.srt")},
+            Optional.empty(),
+            Optional.of("1\n" +
+                "00:05:05,704 --> 00:05:07,039\n" +
+                "Se me dás licença, sobrinho,\n" +
+                "\n" +
+                "2\n" +
+                "00:05:07,372 --> 00:05:10,792\n" +
+                "deparei-me com uma situação com um\n" +
+                "dos meus tenentes no Moinho de Pedra\n" +
+                "\n" +
+                "3\n" +
+                "00:05:11,043 --> 00:05:15,339\n" +
+                "que pode ter relação...\n" +
+                "- Cala-te sobre o maldito Moinho.\n" +
+                "\n")
         }
     });
   }
@@ -129,6 +147,7 @@ public final class ApplicationTest {
    * @return the file full path
    */
   private static String subtitleFile(final String file) {
+    System.err.println("using file:" + file);
     return ApplicationTest.class.getResource("/" + file).getPath();
   }
 
